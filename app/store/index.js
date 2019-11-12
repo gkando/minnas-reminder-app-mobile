@@ -1,11 +1,34 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux';
-import thunk from 'redux-thunk';
-import Reducer from './reducers';
+import React from "react";
 
-const Reducers = {
-    appData: Reducer
+export const Store = React.createContext();
+
+const initialState = {
+  episodes: [],
+  favourites: [],
+  data: []
 };
 
-const Store = createStore(combineReducers(Reducers), applyMiddleware(thunk));
+function reducer(state, action) {
+  switch (action.type) {
+    case "FETCH_DATA":
+      return { ...state, episodes: action.payload, data: action.foo };
+    case "ADD_FAV":
+      return {
+        ...state,
+        favourites: [...state.favourites, action.payload]
+      };
+    case "REMOVE_FAV":
+      return {
+        ...state,
+        favourites: action.payload
+      };
+    default:
+      return state;
+  }
+}
 
-export default Store;
+export function StoreProvider(props) {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
+  const value = { state, dispatch };
+  return <Store.Provider value={value}>{props.children}</Store.Provider>;
+}

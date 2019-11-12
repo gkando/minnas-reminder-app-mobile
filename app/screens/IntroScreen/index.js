@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
-import { useSelector } from 'react-redux';
 import Logo from '../../../assets/images/react-logo.png';
 import { MaterialColors, Typography } from '../../theme';
+import { Store } from '../../store';
+import { fetchDataAction } from '../../store/actions';
 
 const IntroScreen = () => {
-
-    const { status } = useSelector(state => state.appData);
+    const status = "FOO"
+    const { state, dispatch } = useContext(Store);
+    useEffect(() => {
+        state.episodes.length === 0 && fetchDataAction(dispatch);
+    }, [state]);
 
     return (
         <View style={styles.container}>
@@ -18,7 +22,7 @@ const IntroScreen = () => {
                 </View>
             </View>
             <Text style={styles.item}>Redux <Text style={{ color: MaterialColors.green[400] }}>{status}</Text></Text>
-            <Text style={styles.item}>TypeScript <Text style={{ color: MaterialColors.blue[800] }}>Added</Text></Text>
+            <Text style={styles.item}>TypeScript <Text style={{ color: MaterialColors.blue[800] }}>{state.episodes[2].name}</Text></Text>
         </View>
     );
 };
