@@ -1,59 +1,137 @@
-import React, { useEffect, useContext } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import Logo from '../../../assets/images/react-logo.png';
-import { MaterialColors, Typography } from '../../theme';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
+import { Dimensions, Image, StyleSheet, Text, View, FlatList } from 'react-native';
+import { FAB } from 'react-native-paper';
+import { AppColors, MaterialColors, Typography, spacing } from '../../theme';
 import { Store } from '../../store';
 import { fetchDataAction } from '../../store/actions';
+import TodoService from '../../store/db';
+import { Item, ItemModal, Screen } from '../../components'
 
 const IntroScreen = () => {
+    var {height, width} = Dimensions.get('window');
     const status = "FOO"
     const { state, dispatch } = useContext(Store);
+
+    const [data, setData] = useState();
     useEffect(() => {
         state.episodes.length === 0 && fetchDataAction(dispatch);
     }, [state]);
+    
+    useEffect(() => {
+        const dataList = TodoService.findAll();
+        setData(dataList);
+    }, []);
+
+    const [modalData, setModalData] = useState(false);
+    const [isVisible, setIsVisible] = useState(false);
+    const [modalType, setModalType] = useState();
+    const onSelect = useCallback(
+        (type, title) => {
+            console.log(type, 'title:  ', title)
+            setModalType(type)
+            setModalData(title)
+            setIsVisible(true)
+    },[],);
+
+    const toggleAdd = () => {
+        console.log('toggle add')
+        setModalType('add')
+        setIsVisible(true)
+    }
+
+    const info = data
+    ? 'Number of items in this Realm: ' + data.length
+    : 'Loading...';
 
     return (
-        <View style={styles.container}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', }}>
-                <Image source={Logo} style={styles.logo} />
-                <View style={styles.headerContainer}>
-                    <Text style={styles.heading}>React Native Boilerplate</Text>
-                    <Text style={styles.body}>Robust boilerplate to kickstart your next app</Text>
-                </View>
+        <View style={styles.full}>
+            {/* <Screen style={styles.container} preset="scroll"> */}
+            <View style={styles.container}>
+            <View style={styles.headerContainer}>
+                <Text style={styles.heading}>Today</Text>
+                <Text style={styles.body}>Robust boilerplate to kickstart your next app</Text>
             </View>
             <Text style={styles.item}>Redux <Text style={{ color: MaterialColors.green[400] }}>{status}</Text></Text>
-            <Text style={styles.item}>TypeScript <Text style={{ color: MaterialColors.blue[800] }}>{state.episodes[2].name}</Text></Text>
+            <Text style={styles.item}>TypeScript <Text style={{ color: MaterialColors.blue[800] }}>Stuff</Text></Text>
+            <Text style={styles.item}>Realm <Text style={{ color: MaterialColors.blue[800] }}>{info}</Text></Text>
+        
+            <View style={{flex: 1, flexWrap: 'wrap', width: Dimensions.get('window').width }}>
+                <FlatList
+                    data={data}
+                    style={styles.list}
+                    numColumns={1}
+                    renderItem={({ item }) => (
+                    <Item
+                        key={item.id}
+                        id={item.id}
+                        style={styles.listItem}
+                        title={item.title}
+                        // selected={!!selected.get(item.id)}
+                        onSelect={() => onSelect('view', item.title)}
+                    />
+                    )}
+                    keyExtractor={item => item.id}
+                />
+            </View>
+            <FAB
+                style={styles.fab}
+                icon="plus"
+                color='#fff'
+                onPress={() => toggleAdd()}
+                // onPress={() => alert('Pressed')}
+            />
+            <ItemModal modalType={modalType} isVisible={isVisible} setIsVisible={setIsVisible} modalData={modalData} />
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    full: {
+        flex: 1, 
+    },
     container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingHorizontal: spacing.tiny,
+        // flexWrap: 'wrap',
+        backgroundColor: AppColors.background
     },
     headerContainer: {
-        marginLeft: 10
-    },
-    logo: {
-        height: 64,
-        width: 64
+        marginLeft: 10,
+        alignItems: 'center',
     },
     heading: {
-        ...Typography.Body.light,
+        ...Typography.Body.dark,
         fontSize: 24
     },
     body: {
-        ...Typography.Body.light,
+        ...Typography.Body.dark,
         color: MaterialColors.grey[500],
         fontSize: 16
     },
     item: {
-        ...Typography.Body.light,
+        ...Typography.Body.dark,
         marginTop: 10,
         fontSize: 16
-    }
+    },
+    list: {
+        flexDirection: 'column',
+        backgroundColor: AppColors.background,
+    },
+    listItem: {
+        // padding: 20,
+        // marginVertical: 8,
+        // marginHorizontal: 16,
+    },
+    fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor:'rgba(242,86,76,1)',
+    },
 });
 
 export default IntroScreen;

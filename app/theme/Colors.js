@@ -1,13 +1,4 @@
 /**
- * App Colors:
- * This contains all the color config for the application
- */
-
-export const AppColors = {
-    primary: '#69A4EB'
-};
-
-/**
  * Material Colors following material design guidelines for
  * miscellaneous colors
  */
@@ -91,6 +82,7 @@ export const MaterialColors = {
         '900': '#3e2723'
     },
     grey: {
+        '50': '#FAFAFA',
         '100': '#f5f5f5',
         '200': '#eeeeee',
         '300': '#e0e0e0',
@@ -101,4 +93,14 @@ export const MaterialColors = {
         '800': '#424242',
         '900': '#212121'
     }
+};
+/**
+ * App Colors:
+ * This contains all the color config for the application
+ */
+
+export const AppColors = {
+    primary: "#69A4EB",
+    background: MaterialColors.grey[900],
+    secondary: "rgba(242,86,76,1)"
 };
