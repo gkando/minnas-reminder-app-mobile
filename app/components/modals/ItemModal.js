@@ -9,9 +9,9 @@ import {
   TextInput
 } from 'react-native';
 import { Overlay, Icon } from 'react-native-elements';
-import { AppColors, MaterialColors, Typography } from '../theme';
-// import TodoActions from '../store/actions';
-import { Store } from '../store';
+import { AppColors, MaterialColors, Typography } from '../../theme';
+import TodoActions from '../../store/actions';
+import { Store } from '../../store';
 
 
 
@@ -20,16 +20,12 @@ const ViewModal = props => {
     <Text style={styles.overlayText}>{props.data}</Text>
   )
 }
-const AddModal = (props, handleClose) => {
+const AddModal = props => {
   const inputRef = useRef();
   const [value, onChangeText] = useState();
-  const { dispatch, TodoActions } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
   const toggleKeyboard = () => {
     inputRef.current.focus()
-  }
-  const handleSubmit = () => {
-    TodoActions.addItem(value, dispatch);
-    props.close();
   }
   return(
     <View style={styles.input}>
@@ -61,7 +57,7 @@ const AddModal = (props, handleClose) => {
     color={AppColors.secondary}
     disabledStyle={{backgroundColor: 'transparent'}}
     disabled={!value}
-    onPress={() => handleSubmit()} />
+    onPress={() => TodoActions.addItem(value, dispatch)} />
   </View>
   )
 }
@@ -70,9 +66,7 @@ const AddModal = (props, handleClose) => {
 const ItemModal = ({ isVisible, setIsVisible, modalData, modalType }) => {
 
   // const [isVisible, setIsVisible] = useState(false);
-  const handleClose = () => {
-    setIsVisible(!isVisible)
-  }
+
   return (
     <Overlay
     onBackdropPress={() => {setIsVisible(!isVisible)}}
@@ -90,7 +84,7 @@ const ItemModal = ({ isVisible, setIsVisible, modalData, modalType }) => {
     borderRadius={15}
     // fullScreen={false}
   >
-    {modalType === 'view' ? <ViewModal data={modalData} /> : <AddModal data={modalData} close={handleClose} />}
+    {modalType === 'view' ? <ViewModal data={modalData} /> : <AddModal data={modalData} />}
   </Overlay>
   )
 }
@@ -122,4 +116,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ItemModal
+export default ItemModal;

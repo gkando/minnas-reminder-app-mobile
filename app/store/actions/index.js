@@ -1,17 +1,10 @@
 import { dummyData } from "../../utils";
+import TodoService from '../db'
+import TodoModel from '../db/models/TodoModel';
 const API_URL =
   "https://api.tvmaze.com/singlesearch/shows?q=rick-&-morty&embed=episodes";
 
-export const fetchDataAction = async dispatch => {
-  const data = await fetch(API_URL);
-  const dataJSON = await data.json();
-  const foo = dummyData;
-  return dispatch({
-    type: "FETCH_DATA",
-    payload: dataJSON._embedded.episodes,
-    foo: foo
-  });
-};
+
 
 export const toggleFavAction = (episode, state, dispatch) => {
   const episodeInFavourites = state.favourites.includes(episode);
@@ -26,3 +19,22 @@ export const toggleFavAction = (episode, state, dispatch) => {
     };
   return dispatch(dispatchObj);
 };
+
+let TodoActions = {
+  addItem: async function(item, dispatch) {
+    console.log('addItem:  ', item)
+    const data = await TodoService.add(new TodoModel(item));
+  },
+  fetchData: async function(dispatch) {
+    const data = await TodoService.findAll();
+    return dispatch({
+      type: "FETCH_DATA",
+      payload: data,
+    });
+  },
+  testAction: () => {
+    alert('TEST ACTION');
+  }
+};
+
+module.exports = TodoActions;

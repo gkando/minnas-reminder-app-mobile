@@ -38,16 +38,22 @@ let TodoService = {
     });
   },
 
+  add: (todo) => {
+    repository.write(() => {
+      repository.create('Todo', todo);
+    });
+  },
+
   length: function() {
     return repository.objects('Todo').length
   }
 };
 
-TodoService.save(new TodoModel('Hello Koding'));
-TodoService.save(new TodoModel('Make a Todo App with React Native'));
-TodoService.save(new TodoModel('Check to complete a todo'));
-TodoService.save(new TodoModel('Long press, drag and drop a todo to sort'));
-TodoService.save(new TodoModel('Save data with Realm, save more data, get data, write data, read data.'));
-TodoService.save(new TodoModel('Sync data with Firebase'));
+// TodoService.save(new TodoModel('Hello Koding'));
+// TodoService.save(new TodoModel('Make a Todo App with React Native'));
+// TodoService.save(new TodoModel('Check to complete a todo'));
+// TodoService.save(new TodoModel('Long press, drag and drop a todo to sort'));
+// TodoService.save(new TodoModel('Save data with Realm, save more data, get data, write data, read data.'));
+// TodoService.save(new TodoModel('Sync data with Firebase'));
 
 module.exports = TodoService;

@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
+import TodoActions from './actions'
 
 export const Store = React.createContext();
 
 const initialState = {
   episodes: [],
   favourites: [],
-  data: []
+  data: [],
+  items: [],
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case "FETCH_DATA":
-      return { ...state, episodes: action.payload, data: action.foo };
+      return { ...state, items: action.payload };
     case "ADD_FAV":
       return {
         ...state,
@@ -22,6 +24,11 @@ function reducer(state, action) {
         ...state,
         favourites: action.payload
       };
+    case "ADD_ITEM":
+      return {
+        ...state,
+        items: [...state.items, action.payload]
+      };
     default:
       return state;
   }
@@ -29,6 +36,11 @@ function reducer(state, action) {
 
 export function StoreProvider(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
-  const value = { state, dispatch };
+  const value = { state, dispatch, TodoActions };
+  useEffect(() => {
+    console.log('NEW STATE: ', state.items)
+    return () => {
+    };
+  }, [state])
   return <Store.Provider value={value}>{props.children}</Store.Provider>;
 }

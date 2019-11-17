@@ -3,28 +3,31 @@ import { Dimensions, Image, StyleSheet, Text, View, FlatList } from 'react-nativ
 import { FAB } from 'react-native-paper';
 import { AppColors, MaterialColors, Typography, spacing } from '../../theme';
 import { Store } from '../../store';
-import { fetchDataAction } from '../../store/actions';
 import TodoService from '../../store/db';
 import { Item, ItemModal, Screen } from '../../components'
 
 const IntroScreen = () => {
     var {height, width} = Dimensions.get('window');
-    const status = "FOO"
-    const { state, dispatch } = useContext(Store);
+    const status = "NEW"
+    const { state, dispatch, TodoActions } = useContext(Store);
 
     const [data, setData] = useState();
     useEffect(() => {
-        state.episodes.length === 0 && fetchDataAction(dispatch);
+        state.items.length === 0 && TodoActions.fetchData(dispatch);
+        setData(state.items);
     }, [state]);
     
-    useEffect(() => {
-        const dataList = TodoService.findAll();
-        setData(dataList);
-    }, []);
+    // useEffect(() => {
+    //     // const dataList = TodoService.findAll();
+    //     const dataList = TodoService.findAll();
+    //     setData(dataList);
+    //     // TodoActions.testAction();
+    // }, []);
 
     const [modalData, setModalData] = useState(false);
     const [isVisible, setIsVisible] = useState(false);
     const [modalType, setModalType] = useState();
+    
     const onSelect = useCallback(
         (type, title) => {
             console.log(type, 'title:  ', title)
@@ -40,7 +43,7 @@ const IntroScreen = () => {
     }
 
     const info = data
-    ? 'Number of items in this Realm: ' + data.length
+    ? 'Number of items in this new Realm: ' + data.length
     : 'Loading...';
 
     return (
@@ -51,8 +54,6 @@ const IntroScreen = () => {
                 <Text style={styles.heading}>Today</Text>
                 <Text style={styles.body}>Robust boilerplate to kickstart your next app</Text>
             </View>
-            <Text style={styles.item}>Redux <Text style={{ color: MaterialColors.green[400] }}>{status}</Text></Text>
-            <Text style={styles.item}>TypeScript <Text style={{ color: MaterialColors.blue[800] }}>Stuff</Text></Text>
             <Text style={styles.item}>Realm <Text style={{ color: MaterialColors.blue[800] }}>{info}</Text></Text>
         
             <View style={{flex: 1, flexWrap: 'wrap', width: Dimensions.get('window').width }}>
@@ -80,7 +81,11 @@ const IntroScreen = () => {
                 onPress={() => toggleAdd()}
                 // onPress={() => alert('Pressed')}
             />
-            <ItemModal modalType={modalType} isVisible={isVisible} setIsVisible={setIsVisible} modalData={modalData} />
+            <ItemModal
+                modalType={modalType}
+                isVisible={isVisible}
+                setIsVisible={setIsVisible}
+                modalData={modalData} />
             </View>
         </View>
     );

@@ -51,6 +51,8 @@ const styles = StyleSheet.create({
     backgroundColor: AppColors.background,
     paddingVertical: 10,
     width: width,
+    borderTopColor: '#343434',
+    borderWidth: 0.75,
   },
   item: {
     padding: 20,
