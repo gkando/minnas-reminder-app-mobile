@@ -6,21 +6,61 @@ import {
   Modal,
   View,
   TouchableHighlight,
-  TextInput
+  TextInput,
 } from 'react-native';
+import { Container, Header, Left, Body, Right, Button, Title } from 'native-base';
+import { useNavigation } from 'react-navigation-hooks'
 import { Overlay, Icon } from 'react-native-elements';
 import { AppColors, MaterialColors, Typography } from '../theme';
 // import TodoActions from '../store/actions';
+import CustomHeader from './header/CustomHeader'
 import { Store } from '../store';
+
+// const CustomHeader = () => {
+//   return (
+//     <Header>
+//           <Left>
+//             <Button transparent>
+//               <Icon name='arrow-back' />
+//             </Button>
+//           </Left>
+//     <Body>
+//       <Title>Header</Title>
+//     </Body>
+//     <Right />
+//   </Header>
+//   )
+// }
 
 
 
 const ViewModal = props => {
+  const { setModalHeight } = props;
+  const [value, onChangeText] = useState(props.data);
+
   return(
-    <Text style={styles.overlayText}>{props.data}</Text>
+    <View style={styles.input}>
+
+    <TextInput
+    style={{ height: 40 }}
+    onChangeText={text => onChangeText(text)}
+    onFocus={() => setModalHeight(styles.overlayFull)}
+    value={value}
+    selectionColor={AppColors.secondary}
+    placeholderTextColor={MaterialColors.grey[300]}
+    style={styles.input}
+  />
+
+    {/* <Text style={styles.overlayText}>{props.data}</Text> */}
+    </View>
   )
 }
 const AddModal = (props, handleClose) => {
+  // useEffect(() => {
+  // props.setModalHeight({height: '40%'})
+  //   return () => {
+  //   };
+  // }, [])
   const inputRef = useRef();
   const [value, onChangeText] = useState();
   const { dispatch, TodoActions } = useContext(Store);
@@ -66,43 +106,44 @@ const AddModal = (props, handleClose) => {
   )
 }
 
-
-const ItemModal = ({ isVisible, setIsVisible, modalData, modalType }) => {
-
+const ItemModal = ({ isVisible, setIsVisible, modalData, modalType, navigation, props }) => {
+  
   // const [isVisible, setIsVisible] = useState(false);
   const handleClose = () => {
     setIsVisible(!isVisible)
   }
+  const [editing, setEdit] = useState(false);
+  const [modalHeight, setModalHeight] = useState();
+
+  useEffect(() => {
+    modalType === 'add'
+    ? setModalHeight(styles.overlayAdd)
+    : setModalHeight(styles.overlayView)
+    
+    return () => {
+      console.log("cleaned up");
+    };
+  }, [isVisible])
+
   return (
     <Overlay
     onBackdropPress={() => {setIsVisible(!isVisible)}}
-    // overlayStyle={styles.overlay}
-    overlayStyle={[
-      styles.overlay,
-      modalType === 'add' ?
-      { height: '40%' } 
-      : { height: '60%' }
-    ]}
+    overlayStyle={[ styles.overlay, modalHeight ]}
     isVisible={isVisible}
+    // isVisible={true}
     animationType="fade"
     windowBackgroundColor='rgba(18, 18, 18, 0.8)'
-    width='98%'
-    borderRadius={15}
-    // fullScreen={false}
+    width='100%'
+    borderRadius={10}
+    onDismiss={() => console.log('Dismissed')}
   >
-    {modalType === 'view' ? <ViewModal data={modalData} /> : <AddModal data={modalData} close={handleClose} />}
+    {modalHeight === styles.overlayFull ? navigation.push('ItemModal') : null}
+    {modalType === 'view' ? <ViewModal data={modalData} setModalHeight={setModalHeight} /> : <AddModal data={modalData} close={handleClose} setModalHeight={setModalHeight} />}
   </Overlay>
   )
 }
 
 const styles = StyleSheet.create({
-  overlayContainer: {
-    // flex: 2,
-    height: '30%',
-    justifyContent: 'flex-end',
-    alignSelf: 'flex-end',
-    marginTop: '50%',
-  },
   overlay: {
     position: 'absolute',
     bottom: 0,
@@ -112,14 +153,28 @@ const styles = StyleSheet.create({
     borderBottomStartRadius: 0,
     borderBottomEndRadius: 0,
   },
+  overlayFull: {
+    height: '100%',
+    borderColor: 'red',
+    borderRadius: 2
+  },
+  overlayView: {
+    height: '60%'
+  },
+  overlayAdd: {
+    height: '40%'
+  },
   overlayText: {
     fontSize: 20 ,
     color: 'white'
   },
   input: {
-    fontSize: 16 ,
-    color: 'white'
+    padding: 10,
+    fontSize: 20 ,
+    color: 'white',
+    fontFamily: 'sans-serif-light'
   }
 });
+
 
 export default ItemModal

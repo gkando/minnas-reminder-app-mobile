@@ -8,6 +8,9 @@ import { MaterialColors } from './Colors';
 
 const Typography = {
     Heading: {
+        h1: {
+            color: MaterialColors.grey[50]
+        },
         bold: {
             fontSize: 24,
             fontFamily: 'SFProDisplay-Bold',

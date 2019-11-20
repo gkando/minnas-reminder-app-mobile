@@ -38,7 +38,7 @@ export function StoreProvider(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const value = { state, dispatch, TodoActions };
   useEffect(() => {
-    console.log('NEW STATE: ', state.items)
+    console.log('state.items.length: ', state.items.length)
     return () => {
     };
   }, [state])

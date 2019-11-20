@@ -1,12 +1,14 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { Dimensions, Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import { FAB } from 'react-native-paper';
+import { Container, H1 } from 'native-base';
 import { AppColors, MaterialColors, Typography, spacing } from '../../theme';
 import { Store } from '../../store';
 import TodoService from '../../store/db';
-import { Item, ItemModal, Screen } from '../../components'
+import { Item, ItemModal, ItemList } from '../../components'
 
-const IntroScreen = () => {
+const IntroScreen = (props) => {
+    // const navigation = useNavigation();
     var {height, width} = Dimensions.get('window');
     const status = "NEW"
     const { state, dispatch, TodoActions } = useContext(Store);
@@ -47,33 +49,16 @@ const IntroScreen = () => {
     : 'Loading...';
 
     return (
+        <Container>
         <View style={styles.full}>
-            {/* <Screen style={styles.container} preset="scroll"> */}
             <View style={styles.container}>
             <View style={styles.headerContainer}>
-                <Text style={styles.heading}>Today</Text>
+                <H1 style={Typography.Heading.h1}>Today</H1>
                 <Text style={styles.body}>Robust boilerplate to kickstart your next app</Text>
             </View>
             <Text style={styles.item}>Realm <Text style={{ color: MaterialColors.blue[800] }}>{info}</Text></Text>
-        
-            <View style={{flex: 1, flexWrap: 'wrap', width: Dimensions.get('window').width }}>
-                <FlatList
-                    data={data}
-                    style={styles.list}
-                    numColumns={1}
-                    renderItem={({ item }) => (
-                    <Item
-                        key={item.id}
-                        id={item.id}
-                        style={styles.listItem}
-                        title={item.title}
-                        // selected={!!selected.get(item.id)}
-                        onSelect={() => onSelect('view', item.title)}
-                    />
-                    )}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+
+            <ItemList onSelect={onSelect} data={data} />
             <FAB
                 style={styles.fab}
                 icon="plus"
@@ -85,11 +70,19 @@ const IntroScreen = () => {
                 modalType={modalType}
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
-                modalData={modalData} />
+                modalData={modalData}
+                navigation={props.navigation}
+            />
             </View>
         </View>
+    </Container>
     );
 };
+
+IntroScreen.navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('title', 'Today')
+});
+
 
 const styles = StyleSheet.create({
     full: {

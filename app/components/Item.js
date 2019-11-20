@@ -10,12 +10,13 @@ import {
   View,
   TouchableHighlight
 } from 'react-native';
+import { useNavigation } from 'react-navigation-hooks'
 import { AppColors, Typography } from '../theme';
 import { SearchBar, CheckBox, Overlay } from 'react-native-elements';
 
 var {height, width} = Dimensions.get('window');
 const Item = ({ id, title, onSelect }) => {
-  
+  const navigation = useNavigation();
   const [checked, setChecked] = useState(false);
 
   const toggleCheck = props => {
@@ -28,6 +29,7 @@ const Item = ({ id, title, onSelect }) => {
     <TouchableOpacity
       // style={styles.itemContainer}
       onPress={() => onSelect(title)}
+      // onPress={() => navigation.navigate('modal', { modalType: 'view', modalData: title })}
       style={styles.itemContainer}
     >
       <CheckBox
