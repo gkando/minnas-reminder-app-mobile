@@ -16,13 +16,10 @@ import { ItemModal } from '../components'
 const contentNavigator = createStackNavigator({
   IntroScreen: { screen: IntroScreen },
   FooScreen: { screen: FooScreen},
-  Bottom: {
-    screen: BottomSheet,
-  },
 },
   {
     
-    initialRouteName: 'FooScreen',
+    initialRouteName: 'IntroScreen',
     defaultNavigationOptions: {
       headerStyle: {
         backgroundColor: '#424242',
@@ -37,7 +34,12 @@ const contentNavigator = createStackNavigator({
 export const StackNavigator = createStackNavigator(
   {
     content: contentNavigator,
-
+    Bottom: {
+      screen: BottomSheet,
+      navigationOptions: () => ({
+        headerShown: true,
+      }),
+    },
     TestModal: {
       screen: TestModalScreen,
       navigationOptions: {

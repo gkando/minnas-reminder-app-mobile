@@ -26,15 +26,15 @@ const IntroScreen = (props) => {
     //     // TodoActions.testAction();
     // }, []);
 
-    const [modalData, setModalData] = useState(false);
+    const [itemData, setItemData] = useState();
     const [isVisible, setIsVisible] = useState(false);
     const [modalType, setModalType] = useState();
     
     const onSelect = useCallback(
-        (type, title) => {
-            console.log(type, 'title:  ', title)
+        (type, item) => {
+            console.log(type, 'title:  ', item.title)
             setModalType(type)
-            setModalData(title)
+            setItemData(item)
             setIsVisible(true)
     },[],);
 
@@ -70,7 +70,7 @@ const IntroScreen = (props) => {
                 modalType={modalType}
                 isVisible={isVisible}
                 setIsVisible={setIsVisible}
-                modalData={modalData}
+                data={itemData}
                 navigation={props.navigation}
             />
             </View>

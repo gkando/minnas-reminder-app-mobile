@@ -86,6 +86,7 @@ export const MaterialColors = {
         '100': '#f5f5f5',
         '200': '#eeeeee',
         '300': '#e0e0e0',
+        '350': '#D4D4D4',
         '400': '#bdbdbd',
         '500': '#9e9e9e',
         '600': '#757575',
@@ -103,5 +104,8 @@ export const MaterialColors = {
 export const AppColors = {
     primary: "#69A4EB",
     background: MaterialColors.grey[900],
-    secondary: "rgba(242,86,76,1)"
+    secondary: "rgba(242,86,76,1)",
+    header: '#282828',
+    black: '#0c0c0c',
+    whisper: '#eaeaea'
 };

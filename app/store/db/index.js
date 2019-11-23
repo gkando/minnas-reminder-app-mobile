@@ -30,11 +30,16 @@ let TodoService = {
     })
   },
 
-  update: function(todo, callback) {
-    if (!callback) return;
+  update: function(todo, changes) {
+    // var obj = repository.objects('Todo');
+    console.log(todo, changes)
     repository.write(() => {
-      callback();
-      todo.updatedAt = new Date();
+    var obj = repository.objects('Todo').filtered("id = '" + todo.id + "'")
+      console.log('start', obj[0].title)
+      // obj[0].id = todo.id,
+      obj[0].title = changes,
+      obj[0].updatedAt = new Date();
+      console.log('finish', obj[0].title)
     });
   },
 

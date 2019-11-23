@@ -4,7 +4,6 @@ import { FAB } from 'react-native-paper';
 import { Container, H1 } from 'native-base';
 import Item from '../Item'
 import { AppColors, MaterialColors, Typography, spacing } from '../../theme';
-import { Store } from '../../store';
 
 const ItemList = props => {
   const { onSelect, data } = props;
@@ -20,7 +19,7 @@ const ItemList = props => {
             id={item.id}
             style={styles.listItem}
             title={item.title}
-            onSelect={() => onSelect('view', item.title)}
+            onSelect={() => onSelect('view', item)}
         />
         )}
         keyExtractor={item => item.id}

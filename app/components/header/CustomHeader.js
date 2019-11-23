@@ -1,50 +1,37 @@
-import * as React from 'react';
-import { StackActions } from 'react-navigation';
-import HeaderSegment from './HeaderSegment';
+import React from 'react';
+import { StyleSheet, TextInput } from 'react-native';
+import { Header, Left, Body, Right, Button, Title } from 'native-base';
+import { Overlay, Icon } from 'react-native-elements';
+import { AppColors, MaterialColors } from '../../theme';
+import TodoService from '../../store/db';
 
-export default class Header extends React.PureComponent {
-    
-    componentDidMount() {
-        console.log('scene.descriptor:  ', this.props.scene)
-    }
-    render() {
-        const { scene, previous, layout, insets, navigation, styleInterpolator, } = this.props;
-        const { options } = scene.descriptor;
-        
-        const title = typeof options.headerTitle !== 'function' &&
-            options.headerTitle !== undefined
-            ? options.headerTitle
-            : options.title !== undefined
-                ? options.title
-                : scene.route.routeName;
-        let leftLabel;
-        // The label for the left back button shows the title of the previous screen
-        // If a custom label is specified, we use it, otherwise use previous screen's title
-        if (options.headerBackTitle !== undefined) {
-            leftLabel = options.headerBackTitle;
-        }
-        else if (previous) {
-            const o = previous.descriptor.options;
-            leftLabel =
-                typeof o.headerTitle !== 'function' && typeof o.headerTitle === 'string'
-                    ? o.headerTitle
-                    : o.title !== undefined
-                        ? o.title
-                        : previous.route.routeName;
-        }
-        return (
-            <HeaderSegment
-                {...options}
-                layout={layout} 
-                insets={insets} 
-                scene={scene} 
-                title={title} 
-                leftLabel={leftLabel} 
-                onGoBack={previous ? () => 
-                    navigation.dispatch(StackActions.pop({ key: scene.route.key }))
-                    : undefined
-                }
-                styleInterpolator={styleInterpolator}
-            />);
-    }
-}
+const CustomHeader = props => {
+  const {input, item} = props;
+
+  const handleSubmit = () => {
+    TodoService.update(item, input);
+    props.close();
+  };
+  return (
+  <Header
+    style={{elevation: 6, height: 56, backgroundColor: AppColors.header}}
+    androidStatusBarColor={AppColors.black}
+    iosBarStyle="light-content">
+    <Left>
+      <Button transparent onPress={() => props.close()}>
+        <Icon name="arrow-back" color={MaterialColors.grey[350]} />
+      </Button>
+    </Left>
+    <Body>
+      <Title style={{color: AppColors.whisper}}>Edit task</Title>
+    </Body>
+    <Right>
+      <Button transparent onPress={() => handleSubmit()}>
+        <Icon name="send" size={18} color={MaterialColors.grey[350]} />
+      </Button>
+    </Right>
+  </Header>
+  );
+};
+
+export default CustomHeader;
