@@ -29,6 +29,13 @@ function reducer(state, action) {
         ...state,
         items: [...state.items, action.payload]
       };
+    case 'DELETE_ITEM':
+      const foo = state.items.filter(({ id }) => id !== action.payload)
+      console.log(foo.length)
+      return {
+        ...state
+        // items: items.filter(({ id }) => id !== action.payload)
+    }
     default:
       return state;
   }
@@ -38,7 +45,7 @@ export function StoreProvider(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const value = { state, dispatch, TodoActions };
   useEffect(() => {
-    console.log('state.items.length: ', state.items.length)
+    console.log('state.items.length: ', state.items)
     return () => {
     };
   }, [state])

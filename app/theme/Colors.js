@@ -107,5 +107,8 @@ export const AppColors = {
     secondary: "rgba(242,86,76,1)",
     header: '#282828',
     black: '#0c0c0c',
-    whisper: '#eaeaea'
+    whisper: '#eaeaea',
+    red: '#e1493b',
+    sonicSilver: '#8e8e8e',
+    nightRider: '#343434'
 };

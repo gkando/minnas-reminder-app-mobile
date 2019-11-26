@@ -34,18 +34,6 @@ const contentNavigator = createStackNavigator({
 export const StackNavigator = createStackNavigator(
   {
     content: contentNavigator,
-    Bottom: {
-      screen: BottomSheet,
-      navigationOptions: () => ({
-        headerShown: true,
-      }),
-    },
-    TestModal: {
-      screen: TestModalScreen,
-      navigationOptions: {
-        gestureResponseDistance: { vertical: 1000 }, // default is 135 },
-      },
-    },
 },
   {
     headerMode: 'none',

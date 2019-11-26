@@ -2,6 +2,16 @@ import { dummyData } from "../../utils";
 import TodoService from '../db'
 import TodoModel from '../db/models/TodoModel';
 
+  // const resetAction = NavigationActions.reset({
+  //   index: 0,
+  //   actions: [
+  //     NavigationActions.navigate({ routeName: routeName })
+  //   ]
+
+  // })
+  // navigation.dispatch(resetAction)
+
+
 let TodoActions = {
   addItem: async function(item, dispatch) {
     console.log('addItem:  ', item)
@@ -14,9 +24,14 @@ let TodoActions = {
       payload: data,
     });
   },
-  update: () => {return},
-  testAction: () => {
-    alert('TEST ACTION');
+  delete: function(item, dispatch, navigation) {
+    // resetNavigationState(navigation);
+    
+    TodoService.delete(item);
+    return dispatch({
+      type: "DELETE_ITEM",
+      payload: item.id,
+    });
   }
 };
 

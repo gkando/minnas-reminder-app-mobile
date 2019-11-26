@@ -29,7 +29,7 @@ const IntroScreen = (props) => {
     const [itemData, setItemData] = useState();
     const [isVisible, setIsVisible] = useState(false);
     const [modalType, setModalType] = useState();
-    
+    const [clicked, setClicked] = useState()
     const onSelect = useCallback(
         (type, item) => {
             console.log(type, 'title:  ', item.title)
@@ -48,6 +48,7 @@ const IntroScreen = (props) => {
     ? 'Number of items in this new Realm: ' + data.length
     : 'Loading...';
 
+      
     return (
         <Container>
         <View style={styles.full}>
@@ -64,7 +65,6 @@ const IntroScreen = (props) => {
                 icon="plus"
                 color='#fff'
                 onPress={() => toggleAdd()}
-                // onPress={() => alert('Pressed')}
             />
             <ItemModal
                 modalType={modalType}

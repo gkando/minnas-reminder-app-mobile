@@ -1,4 +1,5 @@
 // import ItemModal from './ItemModal';
-import SurveyScreen from './SurveyScreen'
+import ViewModal from './ViewModal'
+import MenuModal from './MenuModal'
 
-export { SurveyScreen };
+export { ViewModal, MenuModal };

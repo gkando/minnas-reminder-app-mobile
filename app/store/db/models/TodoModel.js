@@ -7,6 +7,8 @@ class TodoModel {
     this.completed = completed || false;
     this.createdAt = new Date();
     this.updatedAt = new Date();
+    this.delete = false;
+    this.deletedAt = null;
   }
 }
 
