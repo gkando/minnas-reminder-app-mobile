@@ -1,4 +1,4 @@
-import { MaterialColors } from './Colors';
+import { AppColors, MaterialColors } from './Colors';
 /**
  * Typography:
  * This contains all the typography config for the application
@@ -34,9 +34,13 @@ const Typography = {
             color: '#000'
         },
         dark: {
-            fontSize: 16,
-            fontFamily: 'SFProDisplay-Light',
-            color: MaterialColors.grey[50]
+            // fontSize: 15,
+            // fontFamily: 'SFProDisplay-Light',
+            fontFamily: 'sans-serif-regular',
+            // fontFamily: 'Corporate S Regular',
+            color: AppColors.whisper,
+            // letterSpacing: -0.25,
+            // lineHeight: 24,
         }
     },
     Caption: {

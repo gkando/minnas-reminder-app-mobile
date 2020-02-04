@@ -8,6 +8,7 @@ const initialState = {
   favourites: [],
   data: [],
   items: [],
+  hidden: []
 };
 
 function reducer(state, action) {
@@ -36,6 +37,18 @@ function reducer(state, action) {
         ...state
         // items: items.filter(({ id }) => id !== action.payload)
     }
+    case 'HIDE_ITEM':
+      return {
+        ...state,
+        hidden: [...state.hidden, state.items.filter(({ id }) => id == action.payload)],
+        items: state.items.filter(({ id }) => id !== action.payload)
+    }
+    case 'UNDO_HIDE_ITEM':
+      return {
+        ...state,
+        hidden: [...state.hidden, state.items.filter(({ id }) => id !== action.payload)],
+        items: [...state.items, state.hidden.filter(({ id }) => id == action.payload)]
+    }
     default:
       return state;
   }
@@ -45,7 +58,7 @@ export function StoreProvider(props) {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const value = { state, dispatch, TodoActions };
   useEffect(() => {
-    console.log('state.items.length: ', state.items)
+    // console.log('state.items.length: ', state.items.length, 'hidden.length:  ', state.hidden.length)
     return () => {
     };
   }, [state])

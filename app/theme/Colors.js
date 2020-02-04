@@ -89,6 +89,7 @@ export const MaterialColors = {
         '350': '#D4D4D4',
         '400': '#bdbdbd',
         '500': '#9e9e9e',
+        '550': '#808080',
         '600': '#757575',
         '700': '#616161',
         '800': '#424242',
@@ -110,5 +111,6 @@ export const AppColors = {
     whisper: '#eaeaea',
     red: '#e1493b',
     sonicSilver: '#8e8e8e',
-    nightRider: '#343434'
+    // nightRider: '#343434'
+    nightRider: '#323232'
 };

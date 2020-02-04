@@ -93,10 +93,7 @@ const MenuModal = props => {
     windowBackgroundColor='rgba(18, 18, 18, 0.8)'
     width='100%'
     borderRadius={10}
-    onDismiss={() => console.log('Dismissed')}
   >
-
-      
       <Content style={{marginTop: 20}}>
         <Text style={styles.head}>Added on Mmm dd 24:00</Text>
         <Divider style={{ height: 1.5, backgroundColor: AppColors.nightRider }} />
@@ -115,11 +112,7 @@ const MenuModal = props => {
           }
         </View>
       </Content>
-
   </Overlay>
-
-
-
   </View>
   )
 }
